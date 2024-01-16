@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Engine.Factories
 {
-    internal class WorldFactory
+    internal static class WorldFactory
     {
-        internal World CreateWorld()
+        internal static World CreateWorld()
         {   
             World newWorld = new World();
 
@@ -21,15 +21,14 @@ namespace Engine.Factories
             newWorld.AddLocation(0, 0, "Town square", "This is the town square." + "\n" + "This is the most emblematic place of the town." + "\n" + " This is where the party goes on!", "/Engine;component/Images/Locations/TownSquare.png");
             newWorld.AddLocation(1, 0, "Town Gate", "There is a gate here, protecting the town from giant spiders.", "/Engine;component/Images/Locations/TownGate.png");
             newWorld.AddLocation(2, 0, "Spider Forest", "This is the forbidden spider forest." + "\n" + " What happens to you if you go there is your own business." + "\n" + " Go back!", "/Engine;component/Images/Locations/SpiderForest.png");
-            newWorld.AddLocation(0, 1, "Herbalist's Hut", "This is the herbalist's hut." + "\n" + " She is a very nice lady." + "\n" + " She can help you with your wounds.", "/Engine;component/Images/Locations/HerbalistsHut.png");
+            newWorld.AddLocation(0, 1, 
+                "Herbalist's Hut", "This is the herbalist's hut." + "\n" + " She is a very nice lady." + "\n" + 
+                " She can help you with your wounds.", "/Engine;component/Images/Locations/HerbalistsHut.png");
+            
+            newWorld.LocationAt(0,1).QuestsAvailableHere.Add(QuestFactory.GetQuestByID(1));
+            
             newWorld.AddLocation(0, 2, "Herbalist's Garden", "This is the herbalist's garden." + "\n" + " Pay attention where you step on!", "/Engine;component/Images/Locations/HerbalistsGarden.png");
 
-
-            
-            
-
-            
-            
             return newWorld;
 
         }

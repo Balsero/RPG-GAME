@@ -9,7 +9,7 @@ using System.ComponentModel;
 
 namespace Engine.ViewModels
 {
-    public class GameSession : INotifyPropertyChanged 
+    public class GameSession : BaseNotificationClass 
     {
         private Location _currentLocation;
         
@@ -21,11 +21,12 @@ namespace Engine.ViewModels
             set 
             {
                 _currentLocation = value;
-                OnPropertyChanged("CurrentLocation");
-                OnPropertyChanged("HasLocationToNorth");
-                OnPropertyChanged("HasLocationToEast");
-                OnPropertyChanged("HasLocationToSouth");
-                OnPropertyChanged("HasLocationToWest");
+                OnPropertyChanged(nameof(CurrentLocation));
+                OnPropertyChanged(nameof(HasLocationToNorth));
+                OnPropertyChanged(nameof(HasLocationToEast));
+                OnPropertyChanged(nameof(HasLocationToSouth));
+                OnPropertyChanged(nameof(HasLocationToWest));
+                GivePlayerQuestsAtLocation();
             
             }
             
@@ -68,46 +69,66 @@ namespace Engine.ViewModels
 
         public GameSession()
         {
-            CurrentPlayer = new Player();
-            CurrentPlayer.Name = "Nekrogoblin";
-            CurrentPlayer.Gold = 1000000;
-            CurrentPlayer.CharacterClass = "Fighter";
-            CurrentPlayer.HitPoints = 10;
-            CurrentPlayer.ExperiencePoints = 0;
-            CurrentPlayer.Level = 1;
+            CurrentPlayer = new Player
+            {
+                Name = "Nekrogoblin",
+                CharacterClass = "Fighter",
+                HitPoints = 10,
+                Gold = 1000000,
+                ExperiencePoints = 0,
+                Level = 1
+            };
 
-            WorldFactory factory = new WorldFactory();
-            CurrentWorld = factory.CreateWorld();
+            CurrentWorld = WorldFactory.CreateWorld();
+
             CurrentLocation = CurrentWorld.LocationAt(0, 2);
+            CurrentPlayer.Inventory.Add(ItemFactory.CreateGameItem(1001));
+            CurrentPlayer.Inventory.Add(ItemFactory.CreateGameItem(1002));
+            CurrentPlayer.Inventory.Add(ItemFactory.CreateGameItem(1002));
+
 
 
         }
 
         public void MoveNorth()
         {
-            CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1);
+            if (HasLocationToNorth)
+            {
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1);
+            }
         }
         public void MoveEast()
-
         {
-            CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate );
-
+            if (HasLocationToEast)
+            {
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate);
+            }
         }
         public void MoveSouth()
         {
-            CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate - 1);
-
+            if (HasLocationToSouth)
+            {
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate - 1);
+            }
         }
         public void MoveWest()
         {
-            CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate);
-
+            if (HasLocationToWest)
+            {
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate);
+            }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName)
+        private void GivePlayerQuestsAtLocation()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            foreach (Quest quest in CurrentLocation.QuestsAvailableHere)
+            {
+                if (!CurrentPlayer.Quests.Any(q => q.PlayerQuest.ID == quest.ID))
+                {
+                    CurrentPlayer.Quests.Add(new QuestStatus(quest));
+                }
+            }
         }
+
     }
 }
