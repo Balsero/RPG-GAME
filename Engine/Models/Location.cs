@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Engine.Models;
+using 
 
 namespace Engine.Models
 {
@@ -17,5 +18,7 @@ namespace Engine.Models
         public string ImageName { get; set; }
 
         public List<Quest> QuestsAvailableHere { get; set; } = new List<Quest>();
+        public List<MonsterEncounter> MonstersHere { get; set; } =
+            new List<MonsterEncounter>();
     }
 }
