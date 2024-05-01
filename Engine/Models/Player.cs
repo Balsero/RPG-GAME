@@ -75,11 +75,35 @@ namespace Engine.Models
         }
 
         public ObservableCollection<GameItem> Inventory { get; set; }
+        public List<GameItem> Weapons =>
+            Inventory.Where(i => i is Weapon).ToList();
         public ObservableCollection<QuestStatus> Quests { get; set; }
+        
         public Player()
         {
             Inventory = new ObservableCollection<GameItem>();
             Quests = new ObservableCollection<QuestStatus>();
+        }
+        public void AddItemToInventory(GameItem item)
+        {
+            Inventory.Add(item);
+            OnPropertyChanged(nameof(Weapons));
+        }
+        public void RemoveItemFromInventory(GameItem item)
+        {
+            Inventory.Remove(item);
+            OnPropertyChanged(nameof(Weapons));
+        }
+        public bool HasAllTheseItems(List<ItemQuantity> items)
+        {
+            foreach (ItemQuantity item in items)
+            {
+                if (Inventory.Count(i => i.ItemTypeID == item.ItemID) < item.Quantity)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
