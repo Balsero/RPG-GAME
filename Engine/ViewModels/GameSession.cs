@@ -3,7 +3,6 @@ using System.Linq;
 using Engine.EventArgs;
 using Engine.Factories;
 using Engine.Models;
-using System.Diagnostics;
 namespace Engine.ViewModels
 {
     public class GameSession : BaseNotificationClass
@@ -109,15 +108,10 @@ namespace Engine.ViewModels
                 QuestStatus questToComplete =
                     CurrentPlayer.Quests.FirstOrDefault(q => q.PlayerQuest.ID == quest.ID &&
                                                              !q.IsCompleted);
-
-               
-
                 if (questToComplete != null)
                 {
-                    Trace.WriteLine(questToComplete.PlayerQuest.Name);
                     if (CurrentPlayer.HasAllTheseItems(quest.ItemsToComplete))
-                    {   
-                        Trace.WriteLine("Entro en la condicion");
+                    {
                         // Remove the quest completion items from the player's inventory
                         foreach (ItemQuantity itemQuantity in quest.ItemsToComplete)
                         {

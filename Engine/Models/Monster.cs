@@ -27,7 +27,7 @@ namespace Engine.Models
                        int rewardExperiencePoints, int rewardGold)
         {
             Name = name;
-            ImageName = $"/Engine;component/Images/Monsters/{imageName}";
+            ImageName = $"/Engine;component/Images/Monster/{imageName}";
             MaximumHitPoints = maximumHitPoints;
             HitPoints = hitPoints;
             MinimumDamage = minimumDamage;

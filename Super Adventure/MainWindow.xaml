@@ -34,12 +34,10 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            
             <Label Grid.Row="0" Grid.Column="0" Content="Name:"/>
             <Label Grid.Row="0" Grid.Column="1" Content="{Binding CurrentPlayer.Name}"/>
             <Label Grid.Row="1" Grid.Column="0" Content="Class:"/>
@@ -60,12 +58,10 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            
             <!-- Game Messages -->
             <Border Grid.Row="0" Grid.Column="0"
                     Grid.RowSpan="2"
@@ -80,40 +76,32 @@
                         </Style>
                     </RichTextBox.Resources>
                 </RichTextBox>
-                
             </Border>
-            
             <!-- Location information -->
             <Border Grid.Row="0" Grid.Column="1"
                     BorderBrush="Gainsboro"
                     BorderThickness="1">
-                
                 <Grid Margin="3">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    
                     <TextBlock Grid.Row="0"
                                HorizontalAlignment="Center"
                                Text="{Binding CurrentLocation.Name}"/>
-                    
                     <Image Grid.Row="1"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            Height="125"
                            Width="125"
                            Source="{Binding CurrentLocation.ImageName}"/>
-                    
                     <TextBlock Grid.Row="2"
                                HorizontalAlignment="Center"
                                Text="{Binding CurrentLocation.Description}"
                                TextWrapping="Wrap"/>
                 </Grid>
-                
             </Border>
-            
             <!-- Monster information -->
             <Border Grid.Row="1" Grid.Column="1"
                     BorderBrush="Gainsboro"
@@ -147,7 +135,6 @@
         <!-- Inventory and Quests -->
         <Grid Grid.Row="2" Grid.Column="0"
               Background="BurlyWood">
-        
             <TabControl>
                 <TabItem Header="Inventory">
                     <DataGrid ItemsSource="{Binding CurrentPlayer.Inventory}"
@@ -203,7 +190,6 @@
                     <ColumnDefinition Width="10"/>
                     <ColumnDefinition Width="50"/>
                 </Grid.ColumnDefinitions>
-                
                 <ComboBox Grid.Row="0" Grid.Column="0"
                           ItemsSource="{Binding CurrentPlayer.Weapons}"
                           SelectedItem="{Binding CurrentWeapon}"
