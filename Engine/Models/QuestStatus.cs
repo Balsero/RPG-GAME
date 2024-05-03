@@ -8,12 +8,11 @@ namespace Engine.Models
 {
     public class QuestStatus
     {
-        public Quest PlayerQuest { get; }
+        public Quest PlayerQuest { get; set; }
         public bool IsCompleted { get; set; }
-
-        public QuestStatus(Quest playerQuest)
+        public QuestStatus(Quest quest)
         {
-            PlayerQuest = playerQuest;
+            PlayerQuest = quest;
             IsCompleted = false;
         }
     }
