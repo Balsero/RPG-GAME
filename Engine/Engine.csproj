@@ -46,6 +46,7 @@
     <Compile Include="Factories\ItemFactory.cs" />
     <Compile Include="Factories\MonsterFactory.cs" />
     <Compile Include="Factories\QuestFactory.cs" />
+    <Compile Include="Factories\TraderFactory.cs" />
     <Compile Include="Factories\WorldFactory.cs" />
     <Compile Include="Models\GameItem.cs" />
     <Compile Include="Models\ItemQuantity.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Models\Quest.cs" />
     <Compile Include="Models\QuestStatus.cs" />
     <Compile Include="Models\RandomNumberGenerator.cs" />
+    <Compile Include="Models\Trader.cs" />
     <Compile Include="Models\Weapon.cs" />
     <Compile Include="Models\World.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -3,7 +3,6 @@ using System.Linq;
 using Engine.EventArgs;
 using Engine.Factories;
 using Engine.Models;
-using System.Diagnostics;
 namespace Engine.ViewModels
 {
     public class GameSession : BaseNotificationClass
@@ -12,6 +11,7 @@ namespace Engine.ViewModels
         #region Properties
         private Location _currentLocation;
         private Monster _currentMonster;
+        private Trader _currentTrader;
         public World CurrentWorld { get; set; }
         public Player CurrentPlayer { get; set; }
         public Location CurrentLocation
@@ -28,6 +28,7 @@ namespace Engine.ViewModels
                 CompleteQuestsAtLocation();
                 GivePlayerQuestsAtLocation();
                 GetMonsterAtLocation();
+                CurrentTrader = CurrentLocation.TraderHere;
             }
         }
         public Monster CurrentMonster
@@ -45,6 +46,18 @@ namespace Engine.ViewModels
                 }
             }
         }
+
+        public Trader CurrentTrader
+        {
+            get { return _currentTrader; }
+            set
+            {
+                _currentTrader = value;
+
+                OnPropertyChanged(nameof(CurrentTrader));
+                OnPropertyChanged(nameof(HasTrader));
+            }
+        }
         public Weapon CurrentWeapon { get; set; }
         public bool HasLocationToNorth =>
             CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1) != null;
@@ -55,6 +68,7 @@ namespace Engine.ViewModels
         public bool HasLocationToWest =>
             CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate) != null;
         public bool HasMonster => CurrentMonster != null;
+        public bool HasTrader => CurrentTrader != null;
         #endregion
         public GameSession()
         {
@@ -63,7 +77,7 @@ namespace Engine.ViewModels
                 Name = "Scott",
                 CharacterClass = "Fighter",
                 HitPoints = 10,
-                Gold = 1000000,
+                Gold = 0,
                 ExperiencePoints = 0,
                 Level = 1
             };
@@ -72,7 +86,7 @@ namespace Engine.ViewModels
                 CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(1002));
             }
             CurrentWorld = WorldFactory.CreateWorld();
-            CurrentLocation = CurrentWorld.LocationAt(0, -1);
+            CurrentLocation = CurrentWorld.LocationAt(0, 0);
         }
         public void MoveNorth()
         {
@@ -109,15 +123,10 @@ namespace Engine.ViewModels
                 QuestStatus questToComplete =
                     CurrentPlayer.Quests.FirstOrDefault(q => q.PlayerQuest.ID == quest.ID &&
                                                              !q.IsCompleted);
-
-               
-
                 if (questToComplete != null)
                 {
-                    Trace.WriteLine(questToComplete.PlayerQuest.Name);
                     if (CurrentPlayer.HasAllTheseItems(quest.ItemsToComplete))
-                    {   
-                        Trace.WriteLine("Entro en la condicion");
+                    {
                         // Remove the quest completion items from the player's inventory
                         foreach (ItemQuantity itemQuantity in quest.ItemsToComplete)
                         {
