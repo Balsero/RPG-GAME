@@ -5,6 +5,7 @@ namespace Engine.Models
 {
     public class Player : LivingEntity
     {
+        #region Properties
         private string _characterClass;
         private int _experiencePoints;
         private int _level;
@@ -41,8 +42,10 @@ namespace Engine.Models
             }
         }
         public ObservableCollection<QuestStatus> Quests { get; }
-
-        public Player()
+        #endregion
+        public Player(string name, string characterClass, int experiencePoints,
+                       int maximumHitPoints, int currentHitPoints, int gold) :
+               base(name, maximumHitPoints, currentHitPoints, gold)
         {
             Quests = new ObservableCollection<QuestStatus>();
         }
