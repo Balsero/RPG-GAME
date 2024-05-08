@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Super Adventure", "Super Ad
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "Engine\Engine.csproj", "{B6B1F43E-0263-4E97-9988-6FC40AED5933}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestEngine", "TestEngine\TestEngine.csproj", "{C5E8F3A5-ED2E-486C-968C-3F652E2C0080}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{B6B1F43E-0263-4E97-9988-6FC40AED5933}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6B1F43E-0263-4E97-9988-6FC40AED5933}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6B1F43E-0263-4E97-9988-6FC40AED5933}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5E8F3A5-ED2E-486C-968C-3F652E2C0080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5E8F3A5-ED2E-486C-968C-3F652E2C0080}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5E8F3A5-ED2E-486C-968C-3F652E2C0080}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5E8F3A5-ED2E-486C-968C-3F652E2C0080}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

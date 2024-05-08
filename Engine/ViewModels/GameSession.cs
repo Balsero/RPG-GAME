@@ -13,7 +13,7 @@ namespace Engine.ViewModels
         private Location _currentLocation;
         private Monster _currentMonster;
         private Trader _currentTrader;
-        public World CurrentWorld { get; set; }
+        public World CurrentWorld { get; }
         public Player CurrentPlayer
         {
             get { return _currentPlayer; }
@@ -21,11 +21,13 @@ namespace Engine.ViewModels
             {
                 if (_currentPlayer != null)
                 {
+                    _currentPlayer.OnLeveledUp -= OnCurrentPlayerLeveledUp;
                     _currentPlayer.OnKilled -= OnCurrentPlayerKilled;
                 }
                 _currentPlayer = value;
                 if (_currentPlayer != null)
                 {
+                    _currentPlayer.OnLeveledUp += OnCurrentPlayerLeveledUp;
                     _currentPlayer.OnKilled += OnCurrentPlayerKilled;
                 }
             }
@@ -36,7 +38,7 @@ namespace Engine.ViewModels
             set
             {
                 _currentLocation = value;
-                OnPropertyChanged(nameof(CurrentLocation));
+                OnPropertyChanged();
                 OnPropertyChanged(nameof(HasLocationToNorth));
                 OnPropertyChanged(nameof(HasLocationToEast));
                 OnPropertyChanged(nameof(HasLocationToWest));
@@ -64,7 +66,7 @@ namespace Engine.ViewModels
                     RaiseMessage("");
                     RaiseMessage($"You see a {CurrentMonster.Name} here!");
                 }
-                OnPropertyChanged(nameof(CurrentMonster));
+                OnPropertyChanged();
                 OnPropertyChanged(nameof(HasMonster));
             }
         }
@@ -75,7 +77,7 @@ namespace Engine.ViewModels
             {
                 _currentTrader = value;
 
-                OnPropertyChanged(nameof(CurrentTrader));
+                OnPropertyChanged();
                 OnPropertyChanged(nameof(HasTrader));
             }
         }
@@ -94,10 +96,9 @@ namespace Engine.ViewModels
         public GameSession()
         {
             CurrentPlayer = new Player("Scott", "Fighter", 0, 10, 10, 1000000);
-
             if (!CurrentPlayer.Weapons.Any())
             {
-                CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(1002));
+                CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(1001));
             }
             CurrentWorld = WorldFactory.CreateWorld();
             CurrentLocation = CurrentWorld.LocationAt(0, 0);
@@ -152,15 +153,15 @@ namespace Engine.ViewModels
                         RaiseMessage("");
                         RaiseMessage($"You completed the '{quest.Name}' quest");
                         // Give the player the quest rewards
-                        CurrentPlayer.ExperiencePoints += quest.RewardExperiencePoints;
                         RaiseMessage($"You receive {quest.RewardExperiencePoints} experience points");
+                        CurrentPlayer.AddExperience(quest.RewardExperiencePoints);
                         RaiseMessage($"You receive {quest.RewardGold} gold");
-                        CurrentPlayer.ReceiveGold(CurrentMonster.Gold);
+                        CurrentPlayer.ReceiveGold(quest.RewardGold);
                         foreach (ItemQuantity itemQuantity in quest.RewardItems)
                         {
                             GameItem rewardItem = ItemFactory.CreateGameItem(itemQuantity.ItemID);
-                            CurrentPlayer.AddItemToInventory(rewardItem);
                             RaiseMessage($"You receive a {rewardItem.Name}");
+                            CurrentPlayer.AddItemToInventory(rewardItem);
                         }
                         // Mark the Quest as completed
                         questToComplete.IsCompleted = true;
@@ -212,11 +213,9 @@ namespace Engine.ViewModels
             }
             else
             {
-                
                 RaiseMessage($"You hit the {CurrentMonster.Name} for {damageToMonster} points.");
                 CurrentMonster.TakeDamage(damageToMonster);
             }
-            // If monster if killed, collect rewards and loot
             if (CurrentMonster.IsDead)
             {
                 // Get another monster to fight
@@ -224,26 +223,23 @@ namespace Engine.ViewModels
             }
             else
             {
-                // If monster is still alive, let the monster attack
+                // Let the monster attack
                 int damageToPlayer = RandomNumberGenerator.NumberBetween(CurrentMonster.MinimumDamage, CurrentMonster.MaximumDamage);
                 if (damageToPlayer == 0)
                 {
-                    RaiseMessage("The monster attacks, but misses you.");
+                    RaiseMessage($"The {CurrentMonster.Name} attacks, but misses you.");
                 }
                 else
                 {
-                    
                     RaiseMessage($"The {CurrentMonster.Name} hit you for {damageToPlayer} points.");
                     CurrentPlayer.TakeDamage(damageToPlayer);
                 }
-                 
             }
-
         }
         private void OnCurrentPlayerKilled(object sender, System.EventArgs eventArgs)
         {
             RaiseMessage("");
-            RaiseMessage($"The {CurrentMonster.Name} killed you.");
+            RaiseMessage("You have been killed.");
             CurrentLocation = CurrentWorld.LocationAt(0, -1);
             CurrentPlayer.CompletelyHeal();
         }
@@ -252,7 +248,7 @@ namespace Engine.ViewModels
             RaiseMessage("");
             RaiseMessage($"You defeated the {CurrentMonster.Name}!");
             RaiseMessage($"You receive {CurrentMonster.RewardExperiencePoints} experience points.");
-            CurrentPlayer.ExperiencePoints += CurrentMonster.RewardExperiencePoints;
+            CurrentPlayer.AddExperience(CurrentMonster.RewardExperiencePoints);
             RaiseMessage($"You receive {CurrentMonster.Gold} gold.");
             CurrentPlayer.ReceiveGold(CurrentMonster.Gold);
             foreach (GameItem gameItem in CurrentMonster.Inventory)
@@ -260,6 +256,10 @@ namespace Engine.ViewModels
                 RaiseMessage($"You receive one {gameItem.Name}.");
                 CurrentPlayer.AddItemToInventory(gameItem);
             }
+        }
+        private void OnCurrentPlayerLeveledUp(object sender, System.EventArgs eventArgs)
+        {
+            RaiseMessage($"You are now level {CurrentPlayer.Level}!");
         }
         private void RaiseMessage(string message)
         {
