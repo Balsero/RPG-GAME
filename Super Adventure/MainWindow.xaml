@@ -196,7 +196,7 @@
                 </Grid.ColumnDefinitions>
                 <ComboBox Grid.Row="0" Grid.Column="0"
                           ItemsSource="{Binding CurrentPlayer.Weapons}"
-                          SelectedItem="{Binding CurrentWeapon}"
+                          SelectedItem="{Binding CurrentPlayer.CurrentWeapon}"
                           DisplayMemberPath="Name"
                           SelectedValuePath="ID"/>
                 <Button Grid.Row="0" Grid.Column="2"
