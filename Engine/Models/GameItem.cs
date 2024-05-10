@@ -23,9 +23,9 @@ namespace Engine.Models
 
         public bool IsUnique { get;}
 
-        public AttackWithWeapon Action { get; set; }
+        public IAction Action { get; set; }
 
-        public GameItem(ItemCategory category,int itemTypeID, string name, int price, bool isUnique = false, AttackWithWeapon action = null)
+        public GameItem(ItemCategory category,int itemTypeID, string name, int price, bool isUnique = false, IAction action = null)
         {   
             Category = category;
             ItemTypeID = itemTypeID;
@@ -45,3 +45,4 @@ namespace Engine.Models
         }
     }
 }
+
