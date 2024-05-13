@@ -157,7 +157,7 @@ namespace Engine.Models
             }
             Gold -= amountOfGold;
         }
-
+         
         public void AddItemToInventory(GameItem item)
         {
             Inventory.Add(item);

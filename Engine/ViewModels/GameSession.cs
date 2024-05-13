@@ -193,7 +193,8 @@ namespace Engine.ViewModels
                 }
             }
             else
-            {
+            {   
+                RaiseMessage("");
                 RaiseMessage("You do not have the required ingredients:");
                 foreach (ItemQuantity itemQuantity in recipe.Ingredients)
                 {
@@ -252,7 +253,10 @@ namespace Engine.ViewModels
         }
         public void UseCurrentConsumable()
         {
-            CurrentPlayer.UseCurrentConsumable();
+            if (CurrentPlayer.CurrentConsumable != null)
+            {
+                CurrentPlayer.UseCurrentConsumable();
+            }
         }
         private void OnCurrentPlayerPerformedAction(object sender, string result)
         {

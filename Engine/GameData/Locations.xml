@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Locations RootImagePath="/Images/Locations/">
+	<Location X="-2" Y="-1" Name="Farmer's Field" ImageName="FarmFields.png">
+		<Description><![CDATA[This is the house of your uncle Max, He's a farmer and he's your neighbor.]]></Description>
+		<Monsters>
+			<Monster ID="2" Percent="100"/>
+		</Monsters>
+	</Location>
+	<Location X="-1" Y="-1" Name="Farmer's House" ImageName="Farmhouse.png">
+		<Description><![CDATA[This is the fields of your uncle Max.There are rown of corn growing here , with giant rats hiding between them]]></Description>
+		<Trader Name="Farmer Ted"/>
+	</Location>
+	<Location X="0" Y="-1" Name="Home" ImageName="Home.png">
+		<Description><![CDATA[Home,sweet Home ]]></Description>
+	</Location>
+	<Location X="-1" Y="0" Name="Trading Shop" ImageName="Trader.png">
+		<Description><![CDATA[this is the trading shop of Morton.
+		Look at him! He's very busy]]></Description>
+		<Trader Name="Susan"/>
+	</Location>
+	<Location X="0" Y="0" Name="Town Square" ImageName="TownSquare.png">
+		<Description><![CDATA[This is the town square. This is the most emblematic place of the town. This is where de party goes on !]]></Description>
+	</Location>
+	<Location X="1" Y="0" Name="Town Gate" ImageName="TownGate.png">
+		<Description><![CDATA[There is a gate here, protecting the town from giant spiders.]]></Description>
+	</Location>
+	<Location X="2" Y="0" Name="Spider Forest" ImageName="SpiderForest.png">
+		<Description><![CDATA[This is the forbidden spider forest. What happens to you if you go there is your own business.]]></Description>
+		<Monsters>
+			<Monster ID="3" Percent="100"/>
+		</Monsters>
+	</Location>
+	<Location X="0" Y="1" Name="Herbalist's Hut" ImageName="HerbalistsHut.png">
+		<Description><![CDATA[This is the herbalist's hut. She is a very nice lady. She can help you with your wounds.]]></Description>
+		<Quests>
+			<Quest ID="1"/>
+		</Quests>
+		<Trader Name="Pete the Herbalist"/>
+	</Location>
+	<Location X="0" Y="2" Name="Herbalist's Garden" ImageName="HerbalistsGarden.png">
+		<Description><![CDATA[This is the herbalist's garden. Pay attention where you step on they are snakes hiding behind plants!]]></Description>
+		<Monsters>
+			<Monster ID="1" Percent="100"/>
+		</Monsters>
+	</Location>
+</Locations>

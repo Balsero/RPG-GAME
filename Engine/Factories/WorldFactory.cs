@@ -1,46 +1,87 @@
 ﻿using Engine.Models;
+using Engine.Shared;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Xml;
 namespace Engine.Factories
 {
     internal static class WorldFactory
     {
+        private const string GAME_DATA_FILENAME = ".\\GameData\\Locations.xml";
+
         internal static World CreateWorld()
         {
-            World newWorld = new World();
-            newWorld.AddLocation(0, -1, "Home", "Home sweet home.", "Home.png");
-            newWorld.AddLocation(-1, -1, "Farmer's House ", "This is the house of your uncle Max." + "\n"
-                + "He is a farmer and he is your neighbor." + "\n" + "Come and say hello.", "Farmhouse.png");
-            newWorld.LocationAt(-1, -1).TraderHere = TraderFactory.GetTraderByName("Uncle Max the Farmer");
-
-            newWorld.AddLocation(-2, -1, "Farmer's Field", "This is the field of your uncle Max." + 
-                "\n" + "There are rows of corn growing here, with giant rats hiding between them.", "FarmFields.png");
-            newWorld.LocationAt(-2, -1).AddMonster(2, 100); 
-            newWorld.AddLocation(0, -1, "Home",
-                "This is your home",
-                "Home.png");
-            newWorld.AddLocation(-1, 0, "Trading Shop", "This is the trading shop of Morton." + "\n" 
-                + "Look at him! He’s very busy.", "Trader.png");
-            newWorld.LocationAt(-1, 0).TraderHere = TraderFactory.GetTraderByName("Morton the Merchant");
-
-            newWorld.AddLocation(0, 0, "Town square", "This is the town square." + "\n" + 
-                "This is the most emblematic place of the town." + "\n" + " This is where the party goes on!", "TownSquare.png");
-            newWorld.AddLocation(1, 0, "Town Gate", "There is a gate here, protecting the town from giant spiders.",
-                "TownGate.png");
-            newWorld.AddLocation(2, 0, "Spider Forest", "This is the forbidden spider forest." + 
-                "\n" + " What happens to you if you go there is your own business." + "\n" + " Go back!", "SpiderForest.png");
+            World world = new World();
             
-            newWorld.LocationAt(2, 0).AddMonster(3, 100);
+            if(File.Exists(GAME_DATA_FILENAME))
+            {
+                XmlDocument data = new XmlDocument();
+                data.LoadXml(File.ReadAllText(GAME_DATA_FILENAME));
+                string rootImagePath = 
+                    data.SelectSingleNode("/Locations").AttributeAsString("RootImagePath");
+                LoadLocationsFromNodes(world,rootImagePath,data.SelectNodes("/Locations/Location"));
 
-            newWorld.AddLocation(0, 1,
-                "Herbalist's Hut", "This is the herbalist's hut." + "\n" + " She is a very nice lady." + "\n" +
-                " She can help you with your wounds.", "HerbalistsHut.png");
-            newWorld.LocationAt(0, 1).TraderHere = TraderFactory.GetTraderByName("Jasmin the Herbologist");
-            
-            newWorld.LocationAt(0, 1).QuestsAvailableHere.Add(QuestFactory.GetQuestByID(1));
-            newWorld.AddLocation(0, 2, "Herbalist's Garden", "This is the herbalist's garden." + "\n" +
-                " Pay attention where you step on they are snakes hiding behind plants!", "HerbalistsGarden.png");
-            
-            newWorld.LocationAt(0, 2).AddMonster(1, 100);
-            return newWorld;
+            }
+            else
+            {
+                throw new FileNotFoundException($"Missing data file: {GAME_DATA_FILENAME}");
+            }
+            return world;
+
+        }
+
+        private static void LoadLocationsFromNodes(World world, string rootImagePath, XmlNodeList nodes)
+        {
+            if(nodes == null)
+            {
+                return;
+            }
+            foreach(XmlNode node in nodes)
+            {
+                Location location = new Location(node.AttributeAsInt("X"), 
+                    node.AttributeAsInt("Y"), node.AttributeAsString("Name"), 
+                    node.AttributeAsString("Description"),
+                    $"{rootImagePath}{node.AttributeAsString("ImageName")}");
+                AddMonsters(location, node.SelectNodes("./Monsters/Monster"));
+                AddQuests(location, node.SelectNodes("./Quests/Quest"));
+                AddTrader(location, node.SelectSingleNode("./Trader"));
+                world.AddLocation(location);
+            }
+
+
+        }
+        private static void AddMonsters(Location location, XmlNodeList monsters)
+        {
+            if (monsters == null)
+            {
+                return;
+            }
+            foreach (XmlNode monsterNode in monsters)
+            {
+                location.AddMonster(monsterNode.AttributeAsInt("ID"),
+                                    monsterNode.AttributeAsInt("Percent"));
+            }
+        }
+        private static void AddQuests(Location location, XmlNodeList quests)
+        {
+            if (quests == null)
+            {
+                return;
+            }
+            foreach (XmlNode questNode in quests)
+            {
+                location.QuestsAvailableHere
+                        .Add(QuestFactory.GetQuestByID(questNode.AttributeAsInt("ID")));
+            }
+        }
+        private static void AddTrader(Location location, XmlNode traderHere)
+        {
+            if (traderHere == null)
+            {
+                return;
+            }
+            location.TraderHere =
+                TraderFactory.GetTraderByName(traderHere.AttributeAsString("Name"));
         }
     }
 }
