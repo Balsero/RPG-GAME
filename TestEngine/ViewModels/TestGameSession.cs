@@ -10,7 +10,7 @@ namespace TestEngine.ViewModels
         {
             GameSession gameSession = new GameSession();
             Assert.IsNotNull(gameSession.CurrentPlayer);
-            Assert.AreEqual("Town square", gameSession.CurrentLocation.Name);
+            Assert.AreEqual("Town Square", gameSession.CurrentLocation.Name);
         }
         [TestMethod]
         public void TestPlayerMovesHomeAndIsCompletelyHealedOnKilled()
