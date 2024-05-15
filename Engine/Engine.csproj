@@ -49,11 +49,13 @@
     <Compile Include="Factories\ItemFactory.cs" />
     <Compile Include="Factories\MonsterFactory.cs" />
     <Compile Include="Factories\QuestFactory.cs" />
+    <Compile Include="Factories\RecipeFactory.cs" />
     <Compile Include="Factories\TraderFactory.cs" />
     <Compile Include="Factories\WorldFactory.cs" />
     <Compile Include="Models\GameItem.cs" />
     <Compile Include="Models\GroupedInventoryItem.cs" />
     <Compile Include="Models\Heal.cs" />
+    <Compile Include="Models\ItemPercentage.cs" />
     <Compile Include="Models\ItemQuantity.cs" />
     <Compile Include="Models\LivingEntity.cs" />
     <Compile Include="Models\Location.cs" />
@@ -100,25 +102,40 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <None Include="Images\Monster\Snake.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Images\Monster\Rat.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Images\Monster\Spider.png">
+    <None Include="GameData\Monsters.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="GameData\GameItems.xml">
+    <None Include="Images\Monsters\Snake.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="GameData\Locations.xml">
+    </None>
+    <None Include="Images\Monsters\Rat.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
+    <None Include="Images\Monsters\Spider.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GameData\GameItems.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="GameData\Locations.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GameData\Quests.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="GameData\Recipes.xml" />
+    <None Include="GameData\Traders.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
