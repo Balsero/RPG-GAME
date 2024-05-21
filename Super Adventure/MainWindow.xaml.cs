@@ -1,28 +1,26 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using Engine.EventArgs;
 using Engine.Models;
+using Engine.Services;
 using Engine.ViewModels;
-using System.Windows.Controls;
 namespace WPFUI
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly GameSession _gameSession;
+        private readonly MessageBroker _messageBroker = MessageBroker.GetInstance();
+        private readonly GameSession _gameSession = new GameSession();
         private readonly Dictionary<Key, Action> _userInputActions =
             new Dictionary<Key, Action>();
         public MainWindow()
         {
             InitializeComponent();
             InitializeUserInputActions();
-            _gameSession = new GameSession();
-            _gameSession.OnMessageRaised += OnGameMessageRaised;
+            _messageBroker.OnMessageRaised += OnGameMessageRaised;
             DataContext = _gameSession;
         }
         private void OnClick_MoveNorth(object sender, RoutedEventArgs e)
@@ -41,17 +39,14 @@ namespace WPFUI
         {
             _gameSession.MoveSouth();
         }
-
         private void OnClick_AttackMonster(object sender, RoutedEventArgs e)
         {
             _gameSession.AttackCurrentMonster();
         }
-
         private void OnClick_UseCurrentConsumable(object sender, RoutedEventArgs e)
         {
             _gameSession.UseCurrentConsumable();
         }
-
         private void OnGameMessageRaised(object sender, GameMessageEventArgs e)
         {
             GameMessages.Document.Blocks.Add(new Paragraph(new Run(e.Message)));
@@ -59,12 +54,14 @@ namespace WPFUI
         }
         private void OnClick_DisplayTradeScreen(object sender, RoutedEventArgs e)
         {
-            TradeScreen tradeScreen = new TradeScreen();
-            tradeScreen.Owner = this;
-            tradeScreen.DataContext = _gameSession;
-            tradeScreen.ShowDialog();
+            if (_gameSession.CurrentTrader != null)
+            {
+                TradeScreen tradeScreen = new TradeScreen();
+                tradeScreen.Owner = this;
+                tradeScreen.DataContext = _gameSession;
+                tradeScreen.ShowDialog();
+            }
         }
-
         private void OnClick_Craft(object sender, RoutedEventArgs e)
         {
             Recipe recipe = ((FrameworkElement)sender).DataContext as Recipe;
@@ -104,6 +101,5 @@ namespace WPFUI
                 }
             }
         }
-
     }
 }
