@@ -7,8 +7,9 @@
         d:DataContext="{d:DesignInstance viewModels:GameSession}"
         mc:Ignorable="d"
         FontSize="11pt"
-        Title="Scott's Awesome Game" Height="768" Width="1024"
-        KeyDown="MainWindow_OnKeyDown">
+        Title="Super Adventure" Height="768" Width="1024"
+        KeyDown="MainWindow_OnKeyDown"
+        Closing="MainWindow_OnClosing">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility" />
     </Window.Resources>
@@ -24,9 +25,34 @@
         </Grid.ColumnDefinitions>
         <!-- Menu -->
         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Menu" Background="AliceBlue"/>
+        <Menu Grid.Row="0" Grid.Column="0"
+              Grid.ColumnSpan="2"
+              FontSize="11pt"
+              Background="AliceBlue">
+            <MenuItem Header="File">
+                <MenuItem Header="Start New Game"
+                          Click="StartNewGame_OnClick"/>
+                <Separator/>
+                <MenuItem Header="Load Game"
+                          Click="LoadGame_OnClick"/>
+                <MenuItem Header="Save Game"
+                          Click="SaveGame_OnClick"/>
+                <Separator/>
+                <MenuItem Header="Exit"
+                          Click="Exit_OnClick"/>
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="Help"
+                          IsEnabled="False"/>
+                <Separator/>
+                <MenuItem Header="About"
+                          IsEnabled="False"/>
+            </MenuItem>
+        </Menu>
         <!-- Player stats -->
         <Grid Grid.Row="1" Grid.Column="0" Background="Aquamarine">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -43,14 +69,16 @@
             <Label Grid.Row="0" Grid.Column="1" Content="{Binding CurrentPlayer.Name}"/>
             <Label Grid.Row="1" Grid.Column="0" Content="Class:"/>
             <Label Grid.Row="1" Grid.Column="1" Content="{Binding CurrentPlayer.CharacterClass}"/>
-            <Label Grid.Row="2" Grid.Column="0" Content="Hit points:"/>
-            <Label Grid.Row="2" Grid.Column="1" Content="{Binding CurrentPlayer.CurrentHitPoints}"/>
-            <Label Grid.Row="3" Grid.Column="0" Content="Gold:"/>
-            <Label Grid.Row="3" Grid.Column="1" Content="{Binding CurrentPlayer.Gold}"/>
-            <Label Grid.Row="4" Grid.Column="0" Content="XP:"/>
-            <Label Grid.Row="4" Grid.Column="1" Content="{Binding CurrentPlayer.ExperiencePoints}"/>
-            <Label Grid.Row="5" Grid.Column="0" Content="Level:"/>
-            <Label Grid.Row="5" Grid.Column="1" Content="{Binding CurrentPlayer.Level}"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="Dexterity:"/>
+            <Label Grid.Row="2" Grid.Column="1" Content="{Binding CurrentPlayer.Dexterity}"/>
+            <Label Grid.Row="3" Grid.Column="0" Content="Hit points:"/>
+            <Label Grid.Row="3" Grid.Column="1" Content="{Binding CurrentPlayer.CurrentHitPoints}"/>
+            <Label Grid.Row="4" Grid.Column="0" Content="Gold:"/>
+            <Label Grid.Row="4" Grid.Column="1" Content="{Binding CurrentPlayer.Gold}"/>
+            <Label Grid.Row="5" Grid.Column="0" Content="XP:"/>
+            <Label Grid.Row="5" Grid.Column="1" Content="{Binding CurrentPlayer.ExperiencePoints}"/>
+            <Label Grid.Row="6" Grid.Column="0" Content="Level:"/>
+            <Label Grid.Row="6" Grid.Column="1" Content="{Binding CurrentPlayer.Level}"/>
         </Grid>
         <!-- Gameplay -->
         <Grid Grid.Row="1" Grid.Column="1"

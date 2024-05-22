@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Engine.Factories;
+using Engine.Services;
 namespace Engine.Models
 {
     public class Monster : LivingEntity
@@ -10,10 +11,10 @@ namespace Engine.Models
         public string ImageName { get; }
         public int RewardExperiencePoints { get; }
         public Monster(int id, string name, string imageName,
-                       int maximumHitPoints,
+                       int maximumHitPoints, int dexterity,
                        GameItem currentWeapon,
                        int rewardExperiencePoints, int gold) :
-            base(name, maximumHitPoints, maximumHitPoints, gold)
+            base(name, maximumHitPoints, maximumHitPoints, dexterity, gold)
         {
             ID = id;
             ImageName = imageName;
@@ -31,14 +32,14 @@ namespace Engine.Models
         {
             // "Clone" this monster to a new Monster object
             Monster newMonster =
-                new Monster(ID, Name, ImageName, MaximumHitPoints, CurrentWeapon,
-                            RewardExperiencePoints, Gold);
+                new Monster(ID, Name, ImageName, MaximumHitPoints, Dexterity,
+                            CurrentWeapon, RewardExperiencePoints, Gold);
             foreach (ItemPercentage itemPercentage in _lootTable)
             {
                 // Clone the loot table - even though we probably won't need it
                 newMonster.AddItemToLootTable(itemPercentage.ID, itemPercentage.Percentage);
                 // Populate the new monster's inventory, using the loot table
-                if (RandomNumberGenerator.NumberBetween(1, 100) <= itemPercentage.Percentage)
+                if (DiceService.Instance.Roll(100).Value <= itemPercentage.Percentage)
                 {
                     newMonster.AddItemToInventory(ItemFactory.CreateGameItem(itemPercentage.ID));
                 }

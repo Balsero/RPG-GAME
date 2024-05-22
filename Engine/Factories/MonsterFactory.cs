@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -12,7 +13,7 @@ namespace Engine.Factories
         private static readonly List<Monster> _baseMonsters = new List<Monster>();
         static MonsterFactory()
         {
-            if (File.Exists(GAME_DATA_FILENAME))
+            if(File.Exists(GAME_DATA_FILENAME))
             {
                 XmlDocument data = new XmlDocument();
                 data.LoadXml(File.ReadAllText(GAME_DATA_FILENAME));
@@ -28,24 +29,25 @@ namespace Engine.Factories
         }
         private static void LoadMonstersFromNodes(XmlNodeList nodes, string rootImagePath)
         {
-            if (nodes == null)
+            if(nodes == null)
             {
                 return;
             }
-            foreach (XmlNode node in nodes)
+            foreach(XmlNode node in nodes)
             {
                 Monster monster =
                     new Monster(node.AttributeAsInt("ID"),
                                 node.AttributeAsString("Name"),
                                 $".{rootImagePath}{node.AttributeAsString("ImageName")}",
                                 node.AttributeAsInt("MaximumHitPoints"),
+                                Convert.ToInt32(node.SelectSingleNode("./Dexterity").InnerText),
                                 ItemFactory.CreateGameItem(node.AttributeAsInt("WeaponID")),
                                 node.AttributeAsInt("RewardXP"),
                                 node.AttributeAsInt("Gold"));
                 XmlNodeList lootItemNodes = node.SelectNodes("./LootItems/LootItem");
-                if (lootItemNodes != null)
+                if(lootItemNodes != null)
                 {
-                    foreach (XmlNode lootItemNode in lootItemNodes)
+                    foreach(XmlNode lootItemNode in lootItemNodes)
                     {
                         monster.AddItemToLootTable(lootItemNode.AttributeAsInt("ID"),
                                                    lootItemNode.AttributeAsInt("Percentage"));

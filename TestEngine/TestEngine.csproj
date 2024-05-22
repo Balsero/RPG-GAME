@@ -52,10 +52,15 @@
     <Compile Include="Actions\TestAttackWithWeapon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\TestInventory.cs" />
+    <Compile Include="Services\TestCombatService.cs" />
+    <Compile Include="Services\TestSaveGameService.cs" />
     <Compile Include="ViewModels\TestGameSession.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="TestFiles\SavedGames\Game_0_1_000.superSave">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj">

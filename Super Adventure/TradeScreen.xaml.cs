@@ -20,9 +20,6 @@ namespace WPFUI
             if (groupedInventoryItem != null)
             {
                 Session.CurrentPlayer.ReceiveGold(groupedInventoryItem.Item.Price);
-                
-                groupedInventoryItem.Item.Price = groupedInventoryItem.Item.Price * 2;
-
                 Session.CurrentTrader.AddItemToInventory(groupedInventoryItem.Item);
                 Session.CurrentPlayer.RemoveItemFromInventory(groupedInventoryItem.Item);
             }
